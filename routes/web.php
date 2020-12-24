@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return "homepage";
 });
-
+Route::redirect('/users', '/home', 301);
 Route::get('/users/{id}', function ($id) {
     return "user page".$id;
 });
