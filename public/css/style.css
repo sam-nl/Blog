@@ -1,0 +1,57 @@
+:root {
+    font:20px/1 "Tahoma", sans-serif;
+}
+
+article {
+    display:grid;
+    grid-template-columns:1fr minmax(0,8in) 1fr;
+    grid-column: 2 / 3;
+    background:linear-gradient(lightblue,whitesmoke);
+}
+img {
+    width: 100px;
+    height: 100px;
+}
+.header {
+    padding: 1px;
+    background: purple;
+    color: yellow;
+}
+
+.article-centre{
+    text-align: left;
+    display:flex;
+    grid-column: 2; 
+    padding-left: 50px;
+    padding-right: 50px;
+    border-left: 5px solid purple;
+    border-right: 5px solid purple;
+    border-radius: 20px;
+    margin: 10px;
+    background:whitesmoke;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    background-color:purple;
+    
+  }
+  
+  li {
+    float: left;
+    text-align: center;
+  }
+  
+  li a {
+    display: block;
+    color: yellow;
+    text-align: center;
+    padding: 50px 50px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: darkmagenta;
+  }

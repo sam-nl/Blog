@@ -17,15 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return "homepage";
-});
-Route::redirect('/users', '/home', 301);
-Route::get('/users/{id}', function ($id) {
-    return "user page".$id;
+Route::get('/home', 'App\Http\Controllers\PagesController@getHome');
+Route::get('/profile', 'App\Http\Controllers\PagesController@getProfile');
+//Route::redirect('/profile', '/home', 301);
+
+Route::get('/profile/{id}', function ($id) {
+    return "profile page".$id;
 });
 
-Route::get('/users/{id}/{commentId}', function ($id, $commentId) {
+Route::get('/profile/{id}/{commentId}', function ($id, $commentId) {
     return "user page".$id." comment id". $commentId;
 });
 
