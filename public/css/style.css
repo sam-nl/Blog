@@ -29,14 +29,13 @@ img {
     border-radius: 20px;
     margin: 10px;
     background:whitesmoke;
+
 }
 
 ul {
     list-style-type: none;
     margin: 0;
     overflow: hidden;
-    background-color:purple;
-    
   }
   
   li {
@@ -54,4 +53,13 @@ ul {
   
   li a:hover {
     background-color: darkmagenta;
+  }
+
+  .centre-form{
+    text-align: center;
+  }
+
+  .err{
+    color:red;
+    font-size: 14px;
   }

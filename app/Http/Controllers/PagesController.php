@@ -13,7 +13,8 @@ class PagesController extends Controller
 
     public function getProfile()
     {
-        return view('profile');
+        
+        return view('users/profile');
         
     }
 }

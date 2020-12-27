@@ -12,9 +12,6 @@
                 @yield('links')
             </ul>
         </div>
-        
-        <article>
-            @yield('content')
-        </article> 
+         @yield('content')
     </body>
 </html>
