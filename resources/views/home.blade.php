@@ -18,11 +18,15 @@ Glob home
             You can also view other people's posts. Enjoy globbing!
         </p>
     </div>
+    @if (session('user')==null)
     <div class="article-centre">
         <p>
             You are not currently logged in, register or login
             with the links at the top.
         </p>
     </div>
+        
+    @endif
+    
 </article>
 @endsection

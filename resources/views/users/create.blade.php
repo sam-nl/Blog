@@ -6,7 +6,7 @@ Glob register
 
 @section('links')
 <li><a href="/home">Home</a></li>
-<li><a href="#login">Login</a></li>
+<li><a href="/users/login">Login</a></li>
 @endsection
 
 @section('content')

@@ -49,13 +49,29 @@ class UserController extends Controller
         $username = $request->username;
         $email = $request->email;
         $password = $request->password;
+        if (strlen($password)<8){
+            return back()->withErrors([
+                'password' => 'Password needs to be atleast 8 characters',
+            ]);
+        }
+        if (strlen($username)<4){
+            return back()->withErrors([
+                'username' => 'Username needs to be atleast 4 characters',
+            ]);
+        }
+        if (sizeof(User::where('username',$username)->get())!=0){
+            return back()->withErrors([
+                'username' => 'Username is taken',
+            ]);
+        }
+        
         $password = Hash::make($password);;
 
         $user = User::create(['username'=>$username, 'email' => $email, 'password' => $password]);
         Auth::loginUsingId($user->id);
-        $request->session()->put('username',$user['username']);
-        $request->session()->put('id',$user['id']);
-        return redirect('users/profile');
+        $request->session()->put('user',$user);
+        session(['profile' => $user]);
+        return redirect('users/profile/'.$username);
     }
 
     /**
@@ -66,7 +82,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        dd($id);
+        $user = \App\Models\User::find($id);
+        session(['profile' => $user]);
+        if ($user!=null){
+            return redirect('users/profile/'.$user['username']);
+        }
+        return redirect('home');
     }
 
     /**
@@ -75,9 +96,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user)
     {
-        //
+        $userver = User::where('username',$user) -> first();
+        if (Auth::id()==$userver['id']){
+            return view('users/edit');
+        }
+        return back();
     }
 
     /**
@@ -87,9 +112,50 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $user = \App\Models\User::find(Auth::id());
+
+        $data = request()->validate([
+           
+            'email' => 'email'
+        ]);
+        if ($request['username']){
+            $username = $request->username;
+            if (strlen($username)<4){
+                return back()->withErrors([
+                    'username' => 'Username needs to be atleast 4 characters',
+                ]);
+            }
+            if (User::where('username',$username)==null){
+                return back()->withErrors([
+                    'username' => 'Username is taken',
+                ]);
+            }
+            $update = ['username'=>$username];
+            $user->update($update);
+        }
+        else if ($request['email']){
+            $email = $request->email;
+            $update = ['email'=>$email];
+            $user->update($update);
+        }
+        else if ($request['password']){
+            $password = $request->password;
+           
+            if (strlen($password)<8){
+                return back()->withErrors([
+                    'password' => 'Password needs to be atleast 8 characters',
+                ]);
+        }
+            $password = Hash::make($password);
+            $update = ['password'=>$password];
+            $user->update($update);
+        }else{
+            return back();
+        }
+        session(['user' => $user]);
+        return redirect('users/profile/'.session('user')['username']);
     }
 
     /**
@@ -105,27 +171,51 @@ class UserController extends Controller
 
     public function login(){
         
-        if (session('username')==null)
+        if (session('user')==null)
         {
             return view('users/login'); 
         }
-        return redirect('users/profile');  
+        return redirect('users/profile/'.session('user')['username']);  
     }
 
     public function auth(Request $request){
         $credentials = $request->only('username', 'password');
+
         if (Auth::attempt($credentials)) {
-            $request->session()->put('username',$credentials['username']);
-            return redirect('users/profile');
+            $user = \App\Models\User::find(Auth::id());
+            $request->session()->put('user',$user);
+            session(['profile' => $user]);
+            return redirect('users/profile/'.session('user')['username']);
         }
 
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
+            'username' => 'Username or password incorrect',
         ]);
     }
 
     public function logout(){
         session()->flush();
         return redirect("home");
+    }
+
+    public function displayProfile($user){
+        $userver = User::where('username',$user) -> first();
+        if (session('profile')['username']==$user){
+            return view("users/profile");
+        }
+        return redirect("users/show/".$userver['id']);
+    }
+
+    public function findProfile(Request $request){
+        $data = request()->validate([
+            'username' => 'required'
+        ]);
+        $user = User::where('username',$data['username']) -> first();
+        if ($user!=null){
+            return redirect("users/show/".$user['id']);
+        }
+        return back()->withErrors([
+            'username' => 'Username not found',
+        ]);
     }
 }
