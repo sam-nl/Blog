@@ -9,9 +9,10 @@ Glob profile
     <li><a href="/users/show/{{session('user')['id']}}">Back to my profile</a></li>
     
 @else
+    <li><a href="/posts/create">New post</a></li>
     <li><a href="/users/profile/{{session('user')['username']}}/edit">Edit profile</a></li>
 @endif
-<li><a href="/users/show/4">show</a></li>
+
 <li><a href="/users/logout">Logout</a></li>
 @endsection  
 
@@ -43,24 +44,49 @@ Glob profile
         <p>No posts yet!</p>
         </div>
     @endif
-    @foreach  (\App\Models\Post::where('user_id',session('profile')['id'])->get() as $post)
+    @foreach  (\App\Models\Post::where('user_id',session('profile')['id'])->get()->reverse() as $post)
     <div class="article-centre">
         <p> 
             {{$post['content']}}
+            @if  (session('user')['id'] == session('profile')['id'])
+            <form action="/posts/{{$post['id']}}/edit" method="GET">
+                <button  type = "submit" >Edit</button>
+            </form>
+            @endif
         </p>
     </div>
+    
     <div class = "post-info">
-        <p>
+        <p style = 'font-size: 12px'>
             Posted by 
             {{
                 session('profile')['username']
             }}
             On 
             {{
-                $day = date("D", strtotime($post['created_at']))
+                $day = date("D", strtotime($post['created_at'])).'day'
             }}
+            
         </p>
     </div>
+    <div class="article-comment" style = "display:block">
+        @foreach  (\App\Models\Comment::where('post_id',$post['id'])->get() as $comment)
+            <div>
+                <p> 
+                       
+                    {{
+                        \App\Models\User::where('id',$comment['user_id'])->first('username')['username'].'  commented:  '.$comment['content']
+                    }}
+                    
+                </p>
+            </div>
+            <hr>
+            
+        @endforeach
+    </div>
+    
+    
+    <hr>
     @endforeach
 </article> 
 @endsection

@@ -40,10 +40,11 @@ Route::put('/users/profile/{user}/update','App\Http\Controllers\UserController@u
 Route::get('/posts','App\Http\Controllers\PostController@index');
 Route::get('/posts/create','App\Http\Controllers\PostController@create');
 Route::post('/posts','App\Http\Controllers\PostController@store');
-Route::get('/posts/{post}','App\Http\Controllers\PostController@show');
+Route::get('/posts/{post}/edit','App\Http\Controllers\PostController@edit');
+Route::put('/posts/{post}/update','App\Http\Controllers\PostController@update');
+Route::delete('/posts/{post}/delete','App\Http\Controllers\PostController@destroy');
 
-
-
+Route::get('/comments/{comment}/edit','App\Http\Controllers\CommentController@edit');
 
 
 
