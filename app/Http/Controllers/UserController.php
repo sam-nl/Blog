@@ -65,7 +65,7 @@ class UserController extends Controller
             ]);
         }
         
-        $password = Hash::make($password);;
+        $password = Hash::make($password);
 
         $user = User::create(['username'=>$username, 'email' => $email, 'password' => $password]);
         Auth::loginUsingId($user->id);
@@ -185,6 +185,10 @@ class UserController extends Controller
             $user = \App\Models\User::find(Auth::id());
             $request->session()->put('user',$user);
             session(['profile' => $user]);
+            session(['permissions'=>$user->permissions]);
+            if($user->permissions == 1){
+                return redirect('users/admin');
+            }
             return redirect('users/profile/'.session('user')['username']);
         }
 
@@ -217,5 +221,8 @@ class UserController extends Controller
         return back()->withErrors([
             'username' => 'Username not found',
         ]);
+    }
+    public function adminHome(){
+        return view("users/admin");
     }
 }

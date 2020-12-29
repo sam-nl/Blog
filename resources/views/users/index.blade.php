@@ -1,6 +1,22 @@
-<h1>Users</h1>
+@extends('main')
+
+@section('title')
+User List
+@endsection
+@section('links')
+    <li><a href="/users/admin">Back to admin home</a></li>
+@endsection
+@section('content')
+
+<h1>Users and links to profiles</h1>
 @forelse($users as $user)
-    <p>{{ $user->username}}</p>
+    <div>
+        <a href="users/show/{{$user->id}}">Username: {{$user->username}}</a>
+        <p>Id: {{$user->id}}</p>
+        <p>Email: {{$user->email}}</p>
+        <hr>
+    </div>
 @empty
-    <p>empty</p>
+    <p>No Users!</p>
 @endforelse
+@endsection

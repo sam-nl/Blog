@@ -114,7 +114,7 @@ class PostController extends Controller
         if(strtolower($request->delete) == "delete"){
             $post = \App\Models\Post::find($id);
             $post->delete();
-            return redirect('users/profile/'.session('user')['username']);
+            return redirect('users/profile/'.session('profile')['username']);
         }
         return back()->withErrors([
             'delete' => 'Type delete to confirm'

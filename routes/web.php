@@ -35,6 +35,7 @@ Route::get('/users/show/{user}','App\Http\Controllers\UserController@show');
 Route::get('/users/profile/{user}','App\Http\Controllers\UserController@displayProfile');
 Route::get('/users/profile/{user}/edit','App\Http\Controllers\UserController@edit');
 Route::put('/users/profile/{user}/update','App\Http\Controllers\UserController@update');
+Route::get('/users/admin','App\Http\Controllers\UserController@adminHome');
 
 
 Route::get('/posts','App\Http\Controllers\PostController@index');
