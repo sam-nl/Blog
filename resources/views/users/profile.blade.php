@@ -54,8 +54,17 @@ Glob profile
     <div class="title-msg">
         <h1>{{session('profile')['username']}}'s posts</h1>
     </div>
+    <div>
+        
+        
+    </div>
     @endif
     
+        @if (session('profile')['image']!=null)
+            <img src={{ url('images/'.session('user')['image']) }}>
+        @else
+            <img src={{ url('images/default.png') }}>
+        @endif
    
     @if (sizeof($posts->get()) ==0)
         <div class="article-centre">
@@ -67,7 +76,10 @@ Glob profile
     <div class="article-centre">
 
             <p>{{$post['content']}}</p>
-
+            @if ($post['image']!=null)
+            
+                <img src={{ url('images/'.$post['image']) }}>
+            @endif
             @if  (session('user')['id'] == session('profile')['id'])
                 <form action="/posts/{{$post['id']}}/edit" method="GET">
                     <button  type = "submit" >Edit</button>

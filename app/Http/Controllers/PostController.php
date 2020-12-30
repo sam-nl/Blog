@@ -40,6 +40,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        
        $content = $request->content;
        $tags = $request->tags;
         if ($content==null){
@@ -52,20 +53,38 @@ class PostController extends Controller
                 'content' => 'Post must be less than 200 characters',
             ]);
         }
-        if (sizeof($tags)>5){
-            return back()->withErrors([
-                'tags' => 'Maximum of five tags!',
-            ]);
+        
+        if ($tags!=null){
+            if (sizeof($tags)>5){
+                return back()->withErrors([
+                    'tags' => 'Maximum of five tags!',
+                ]);
+            }
         }
         
         $post = Post::create(['content'=>$content, 'user_id' => Auth::id()]);
-        foreach($tags as $tag){
-            DB::table('post_tag')->insert([
-                'post_id' => $post->id,
-                'tag_id' => $tag
-            ]);
+        if ($tags!=null){
+            foreach($tags as $tag){
+                DB::table('post_tag')->insert([
+                    'post_id' => $post->id,
+                    'tag_id' => $tag
+                ]);
+            }
         }
         
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            
+            $extension = $image->getClientOriginalExtension();
+            $filename = time() . "." . $extension;
+            $request->image->move('images', $filename);
+
+            $post->image = $filename;
+            $post->save();
+        }
+        
+        
+
         return redirect('users/profile/'.session('user')['username']);
     }
 

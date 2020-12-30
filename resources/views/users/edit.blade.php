@@ -58,4 +58,53 @@ Glob edit
     </div>
 </form>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form action="update" method="POST" enctype="multipart/form-data">
+    @method('PUT')
+    <div class = "centre-form">
+        <b>Change picture</b>
+    </div>
+    
+    <div class = "centre-form">
+        <input type ="file" name = "image">
+        @error('image')<div class = "err"><p>{{$message}}<p></div>@enderror
+    </div>  
+    @csrf
+    <div class = "centre-form">
+        <button type="submit" >edit picture</button>
+        <hr>
+    </div>
+</form>
+
+
+
 @endsection

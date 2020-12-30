@@ -115,12 +115,20 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = \App\Models\User::find(Auth::id());
-
         $data = request()->validate([
-           
             'email' => 'email'
         ]);
-        if ($request['username']){
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            
+            $extension = $image->getClientOriginalExtension();
+            $filename = time() . "." . $extension;
+            $request->image->move('images', $filename);
+
+            $user->image = $filename;
+            $user->save();
+        }
+        else if ($request['username']){
             $username = $request->username;
             if (strlen($username)<4){
                 return back()->withErrors([
@@ -154,7 +162,10 @@ class UserController extends Controller
         }else{
             return back();
         }
+
         session(['user' => $user]);
+        session(['profile' => $user]);
+        
         return redirect('users/profile/'.session('user')['username']);
     }
 
