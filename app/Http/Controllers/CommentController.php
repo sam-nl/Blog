@@ -16,6 +16,12 @@ class CommentController extends Controller
     {
         //
     }
+    public function list()
+    {
+        $comments = Comment::get();
+        
+        return $comments;
+    }
 
     /**
      * Show the form for creating a new resource.

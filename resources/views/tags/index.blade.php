@@ -5,26 +5,25 @@ Glob profile
 
 @section('links')
 
-@if  (session('user')['id'] != session('profile')['id'])
+
     @if  (session('user')['permissions']== 1)
         <li class ="links"><a href="/users/admin">Back to admin home</a></li>
     @else
         <li class ="links"><a href="/users/show/{{session('user')['id']}}">Back to my profile</a></li>
     @endif
+    
+  
 
-    
-    
-@else
-    <li class ="links"><a href="/posts/create">New post</a></li>
-    <li class ="links"><a href="/users/profile/{{session('user')['username']}}/edit">Edit profile</a></li>
-@endif
 
 <li class ="links"><a href="/users/logout">Logout</a></li>
 @endsection  
 
 @section('content') 
+
 <article>
-    <form action="/users/profile/find" method="GET" class="left">
+    
+    
+    <form action="/users/profile/find" method="GET" class = "left">
         <div class = "centre-form">
             <b>Search user</b>
             <input type="text" placeholder="Search" name="username" id="username" value="{{old('username')}}" required>
@@ -32,7 +31,7 @@ Glob profile
         </div>
         <div class = "centre-form">
             <hr>
-            <button type="submit">Search</button>
+            <button type="search">Search</button>
         </div>
     </form>
     <form action="/tags/find" method="GET" class = "left">
@@ -46,33 +45,20 @@ Glob profile
             <button type="search">Search</button>
         </div>
     </form>
-    @if (session('user')['id'] == session('profile')['id'])
-        <div class="title-msg">
-            <h1>welcome {{session('user')['username']}}</h1>
-        </div>
-    @else
-    <div class="title-msg">
-        <h1>{{session('profile')['username']}}'s posts</h1>
+    <div class = "middle">
+        <h1> Posts about {{$tag->name}}</h1>
     </div>
-    @endif
-    
-   
-    @if (sizeof($posts->get()) ==0)
+    @if (sizeof($posts) ==0)
         <div class="article-centre">
         <p>No posts yet!</p>
         </div>
     @endif
     
-    @foreach  ($posts = $posts->paginate(5) as $post)
+    @foreach  (array_reverse($posts) as $post)
     <div class="article-centre">
 
             <p>{{$post['content']}}</p>
-
-            @if  (session('user')['id'] == session('profile')['id'])
-                <form action="/posts/{{$post['id']}}/edit" method="GET">
-                    <button  type = "submit" >Edit</button>
-                </form>
-            @endif
+            
             
         
     </div>
@@ -94,7 +80,7 @@ Glob profile
         <p style = 'font-size: 12px'>
             Posted by 
             {{
-                session('profile')['username']
+                \App\Models\User::where('id',$post['user_id'])->get()->first()->username
             }}
             On 
             {{
@@ -120,13 +106,9 @@ Glob profile
     </div>
     
     
-    <hr>
+    
     @endforeach
-    <div class = "middle" style = "grid-column: 2">
-        <p>
-        {{$posts->links('pagination::bootstrap-4')}}
-        </p>
-    </div>
+    
 </article> 
 @endsection
 

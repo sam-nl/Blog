@@ -4,6 +4,9 @@
 Create new post
 @endsection
 
+@section('links')
+<li class ="links"><a href="/users/show/{{session('user')['id']}}">Back to profile</a></li>
+@endsection
 
 @section('content')
 <form action="update" method="POST">

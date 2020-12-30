@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 Use \App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -16,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-
+        
         return view("posts/index", compact('posts'));
     }
 
@@ -27,7 +28,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("posts/create");
+        $tags = \App\Models\Tag::all();
+        return view("posts/create", compact('tags'));
     }
 
     /**
@@ -39,6 +41,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
        $content = $request->content;
+       $tags = $request->tags;
         if ($content==null){
             return back()->withErrors([
                 'content' => 'The post is empty!',
@@ -49,7 +52,20 @@ class PostController extends Controller
                 'content' => 'Post must be less than 200 characters',
             ]);
         }
+        if (sizeof($tags)>5){
+            return back()->withErrors([
+                'tags' => 'Maximum of five tags!',
+            ]);
+        }
+        
         $post = Post::create(['content'=>$content, 'user_id' => Auth::id()]);
+        foreach($tags as $tag){
+            DB::table('post_tag')->insert([
+                'post_id' => $post->id,
+                'tag_id' => $tag
+            ]);
+        }
+        
         return redirect('users/profile/'.session('user')['username']);
     }
 
@@ -99,7 +115,8 @@ class PostController extends Controller
             ]);
         }
         
-        $post->update([$content]);
+        $post->content = $content;
+        $post->save();
         return redirect('users/profile/'.session('user')['username']);
     }
 

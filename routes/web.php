@@ -47,6 +47,10 @@ Route::delete('/posts/{post}/delete','App\Http\Controllers\PostController@destro
 
 Route::get('/comments/{comment}/edit','App\Http\Controllers\CommentController@edit');
 
+Route::get('/tags/index/{tag}','App\Http\Controllers\TagController@index');
+Route::get('/tags/find','App\Http\Controllers\TagController@find');
+Route::get('/tags/create','App\Http\Controllers\TagController@create');
+Route::post('/tags','App\Http\Controllers\TagController@store');
 
 
 

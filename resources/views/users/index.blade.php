@@ -4,7 +4,7 @@
 User List
 @endsection
 @section('links')
-    <li><a href="/users/admin">Back to admin home</a></li>
+    <li class ="links"><a href="/users/admin">Back to admin home</a></li>
 @endsection
 @section('content')
 

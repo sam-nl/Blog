@@ -5,8 +5,8 @@ Glob edit
 @endsection
 
 @section('links')
-<li><a href="/home">Home</a></li>
-<li><a href="/users/show/"{{session('user')['id']}}>Profile</a></li>
+<li class ="links"><a href="/home">Home</a></li>
+<li class ="links"><a href="/users/show/{{session('user')['id']}}">Profile</a></li>
 @endsection
 
 @section('content')

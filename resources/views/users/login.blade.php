@@ -5,8 +5,8 @@ Glob login
 @endsection
 
 @section('links')
-<li><a href="/home">Home</a></li>
-<li><a href="/users/create">Register</a></li>
+<li class ="links"><a href="/home">Home</a></li>
+<li class ="links"><a href="/users/create">Register</a></li>
 @endsection
 
 @section('content')
