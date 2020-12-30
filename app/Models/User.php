@@ -29,7 +29,12 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'image',
     ];
+
+    public function image(){
+        return $this->morphOne(Image::class, "imageable");
+    }
 
     /**
      * The attributes that should be hidden for arrays.

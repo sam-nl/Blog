@@ -120,13 +120,15 @@ class UserController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $image = $request->image;
-            
+            \App\Models\Image::where('imageable_id',session('user')['id'])->
+        where('imageable_type', 'App\Models\User')->delete();
             $extension = $image->getClientOriginalExtension();
             $filename = time() . "." . $extension;
             $request->image->move('images', $filename);
-
-            $user->image = $filename;
+            $image = $user->image()->create(['filename'=>$filename]);
+           
             $user->save();
+            
         }
         else if ($request['username']){
             $username = $request->username;

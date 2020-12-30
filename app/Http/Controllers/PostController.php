@@ -78,9 +78,10 @@ class PostController extends Controller
             $extension = $image->getClientOriginalExtension();
             $filename = time() . "." . $extension;
             $request->image->move('images', $filename);
-
-            $post->image = $filename;
+            $image = $post->image()->create(['filename'=>$filename]);
+           
             $post->save();
+            
         }
         
         
@@ -149,6 +150,8 @@ class PostController extends Controller
     {
         if(strtolower($request->delete) == "delete"){
             $post = \App\Models\Post::find($id);
+           \App\Models\Image::where('imageable_id',$post->id)->
+                where('imageable_type', 'App\Models\Post')->delete();
             $post->delete();
             return redirect('users/profile/'.session('profile')['username']);
         }

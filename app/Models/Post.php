@@ -15,6 +15,10 @@ class Post extends Model
         'image',
     ];
 
+    public function image(){
+        return $this->morphOne('App\Models\Image', "imageable");
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');

@@ -46,25 +46,24 @@ Glob profile
             <button type="search">Search</button>
         </div>
     </form>
-    @if (session('user')['id'] == session('profile')['id'])
-        <div class="title-msg">
-            <h1>welcome {{session('user')['username']}}</h1>
-        </div>
-    @else
     <div class="title-msg">
-        <h1>{{session('profile')['username']}}'s posts</h1>
-    </div>
-    <div>
-        
-        
-    </div>
-    @endif
-    
-        @if (session('profile')['image']!=null)
-            <img src={{ url('images/'.session('user')['image']) }}>
+        @if (session('user')['id'] == session('profile')['id'])
+            
+                <h1>welcome {{session('user')['username']}}</h1>
+                
+            
         @else
-            <img src={{ url('images/default.png') }}>
+        
+            <h1>{{session('profile')['username']}}'s posts </h1>
+            
+    
         @endif
+        <img src={{ url('images/'.\App\Models\Image::where('imageable_id',session('profile')['id'])->
+        where('imageable_type', 'App\Models\User')->first('filename')['filename']) }}>
+    </div>
+    
+        
+        
    
     @if (sizeof($posts->get()) ==0)
         <div class="article-centre">
@@ -76,10 +75,13 @@ Glob profile
     <div class="article-centre">
 
             <p>{{$post['content']}}</p>
-            @if ($post['image']!=null)
             
-                <img src={{ url('images/'.$post['image']) }}>
+            @if(\App\Models\Image::where('imageable_id',$post->id)->
+            where('imageable_type', 'App\Models\Post')->first('filename')['filename'] !=null)
+            <img src={{ url('images/'.\App\Models\Image::where('imageable_id',$post->id)->
+            where('imageable_type', 'App\Models\Post')->first('filename')['filename']) }}>
             @endif
+            
             @if  (session('user')['id'] == session('profile')['id'])
                 <form action="/posts/{{$post['id']}}/edit" method="GET">
                     <button  type = "submit" >Edit</button>
