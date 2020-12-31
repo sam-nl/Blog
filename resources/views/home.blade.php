@@ -25,9 +25,13 @@ Glob home
             with the links at the top.
         </p>
     </div>
-        
+    
     @endif
-    <div id="app" style= "grid-column: 2">
+    <div class="middle" style = "text-align: center" id="app">
+        <p>Add a comment!</p>
+        <input type="text" v-model="newComment">
+        <button @click="createComment">Comment</button>
+    
         <div v-for="comment in comments">
             <div class="article-comment">
                 <p>
@@ -45,10 +49,31 @@ Glob home
         var app = new Vue({
             el: '#app',
             data: {
-                comments: []
+                comments: [],
+                newComment: '',
+                message: '',
+            },
+            methods: {
+                createComment: function(){
+                    axios.post("{{route('api.comments.store')}}",
+                    {
+                        name: this.newComment
+                    })
+                    .then(response=>
+                    {
+                        console.log('test');
+                        this.comments.push(response.data);
+                        this.newComment = ""
+                        
+                    })
+                    .catch(response=>
+                    {
+                        console.log('test');
+                    })
+                }
             },
             mounted(){
-                axios.get("{{route('api.comments.list')}}")
+                axios.get("{{route('api.comments.index')}}")
                 .then(response=>{
                     this.comments = response.data;
                 })

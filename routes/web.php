@@ -17,6 +17,9 @@ use carbon\carbon;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/debug', function () {
+    return view('debug');
+});
 Route::get('/tests', function () {
     return view('users/create');
 });

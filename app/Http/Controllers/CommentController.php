@@ -14,7 +14,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::get();
+        
+        return $comments;
     }
     public function list()
     {
@@ -22,6 +24,8 @@ class CommentController extends Controller
         
         return $comments;
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,7 +45,16 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+       $comment = new Comment;
+       $comment->content= $request['name'];
+       $comment->user_id = 2;
+       $comment->post_id = 2;
+        $comment->save();
+        return $comment;
+        
+
+
     }
 
     /**
