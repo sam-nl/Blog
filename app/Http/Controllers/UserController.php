@@ -216,10 +216,11 @@ class UserController extends Controller
     }
 
     public function displayProfile($user){
+        $users = User::all();
         $userver = User::where('username',$user) -> first();
         if (session('profile')['username']==$user){
             $posts = \App\Models\Post::where('user_id',session('profile')['id'])->latest();
-            return view("users/profile", compact('posts'));
+            return view("users/profile")->with(array('users'=>$users))->with(array('posts'=>$posts));
         }
         return redirect("users/show/".$userver['id']);
     }

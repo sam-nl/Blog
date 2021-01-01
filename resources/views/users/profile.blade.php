@@ -65,77 +65,59 @@ Glob profile
         
         
    
-    @if (sizeof($posts->get()) ==0)
+    @if (sizeof($posts->get()) == 0)
         <div class="article-centre">
         <p>No posts yet!</p>
         </div>
     @endif
     
     @foreach  ($posts = $posts->paginate(5) as $post)
-    <div class="article-centre">
+    
+        <div class="article-centre">
 
-            <p>{{$post['content']}}</p>
+                <p>{{$post['content'] }}</p>
+                <p>{{$post['id'] }}</p>
+                <a href="/posts/{{$post['id']}}/view">View post</a>
+                @if(\App\Models\Image::where('imageable_id',$post->id)->
+                where('imageable_type', 'App\Models\Post')->first('filename')['filename'] !=null)
+                <img src={{ url('images/'.\App\Models\Image::where('imageable_id',$post->id)->
+                where('imageable_type', 'App\Models\Post')->first('filename')['filename']) }}>
+                @endif
+                
+                @if  (session('user')['id'] == session('profile')['id'])
+                    <form action="/posts/{{$post['id']}}/edit" method="GET">
+                        <button  type = "submit" >Edit</button>
+                    </form>
+                @endif
+                
             
-            @if(\App\Models\Image::where('imageable_id',$post->id)->
-            where('imageable_type', 'App\Models\Post')->first('filename')['filename'] !=null)
-            <img src={{ url('images/'.\App\Models\Image::where('imageable_id',$post->id)->
-            where('imageable_type', 'App\Models\Post')->first('filename')['filename']) }}>
-            @endif
-            
-            @if  (session('user')['id'] == session('profile')['id'])
-                <form action="/posts/{{$post['id']}}/edit" method="GET">
-                    <button  type = "submit" >Edit</button>
-                </form>
-            @endif
-            
+        </div>
+        @if  (session('user')['permissions']== 1)
+        <form action="/posts/{{$post->id}}/delete" method="POST">
+            <div class = "centre-form">
+                <p style = "font-size: 16px">Type "delete" to remove</p>
+            </div>
+            <div class = "centre-form">   
+                <input type="text" placeholder="Confirmation" name="delete" id="delete" required>
+                @error('delete')<div class = "err"><p>{{$message}}<p></div>@enderror
+            </div>
+        @method('DELETE')  
+            <button  type = "submit" >DELETE</button>
+            @csrf
+        </form>
+        @endif
+        <div class = "post-info">
+            <p style = 'font-size: 12px'>
+                Posted by {{session('profile')['username']}}
+                On {{ $day = date("D", strtotime($post['created_at'])).'day'}}
+            </p>
+        </div>
         
     </div>
-    @if  (session('user')['permissions']== 1)
-    <form action="/posts/{{$post->id}}/delete" method="POST">
-         <div class = "centre-form">
-            <p style = "font-size: 16px">Type "delete" to remove</p>
-        </div>
-        <div class = "centre-form">   
-            <input type="text" placeholder="Confirmation" name="delete" id="delete" required>
-            @error('delete')<div class = "err"><p>{{$message}}<p></div>@enderror
-        </div>
-    @method('DELETE')  
-        <button  type = "submit" >DELETE</button>
-        @csrf
-    </form>
-    @endif
-    <div class = "post-info">
-        <p style = 'font-size: 12px'>
-            Posted by 
-            {{
-                session('profile')['username']
-            }}
-            On 
-            {{
-                $day = date("D", strtotime($post['created_at'])).'day'
-            }}
-            
-        </p>
-    </div>
-    <div class="article-comment" style = "display:block">
-        @foreach  (\App\Models\Comment::where('post_id',$post['id'])->get() as $comment)
-            <div>
-                <p> 
-                       
-                    {{
-                        \App\Models\User::where('id',$comment['user_id'])->first('username')['username'].'  commented:  '.$comment['content']
-                    }}
-                    
-                </p>
-            </div>
-            <hr>
-            
-        @endforeach
-    </div>
-    
-    
-    <hr>
     @endforeach
+
+    <hr>
+    
     <div class = "middle" style = "grid-column: 2">
         <p>
         {{$posts->links('pagination::bootstrap-4')}}

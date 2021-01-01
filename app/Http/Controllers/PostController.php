@@ -112,7 +112,14 @@ class PostController extends Controller
         $post = \App\Models\Post::find($id);
         return view('posts/edit')->with(array('post'=>$post->content));
     }
-
+    public function view($id)
+    {
+        
+        $post = \App\Models\Post::find($id);
+        $user = \App\Models\User::find($post->user_id);
+        return view('posts/view')->with(array('post'=>$post))->with(array('user'=>$user));
+    }
+    
     /**
      * Update the specified resource in storage.
      *

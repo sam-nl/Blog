@@ -45,6 +45,7 @@ Route::get('/posts','App\Http\Controllers\PostController@index');
 Route::get('/posts/create','App\Http\Controllers\PostController@create');
 Route::post('/posts','App\Http\Controllers\PostController@store');
 Route::get('/posts/{post}/edit','App\Http\Controllers\PostController@edit');
+Route::get('/posts/{post}/view','App\Http\Controllers\PostController@view');
 Route::put('/posts/{post}/update','App\Http\Controllers\PostController@update');
 Route::delete('/posts/{post}/delete','App\Http\Controllers\PostController@destroy');
 

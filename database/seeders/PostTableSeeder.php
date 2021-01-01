@@ -13,7 +13,7 @@ class PostTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Post::factory()->count(200)->create(); 
+        \App\Models\Post::factory()->count(50)->create(); 
         
         
 
