@@ -15,8 +15,9 @@ View post
         <div class = "middle" id="app">
             <p>{{$user->username}} posted: {{$post->content}}</p>
             <hr>
-            <input type="text" v-model="newComment" >
+            <input type="text" v-model="newComment" required>
             <button @click="createComment">Add comment</button>
+            @error('comment')<div class = "err"><p>{{$message}}<p></div>@enderror
             <hr>
             <div v-for="comment in comments">
                 <div v-if="comment.post_id==={{$post->id}}">
@@ -24,6 +25,9 @@ View post
                         
                         <p>@{{comment.user.username}}</p>
                         <p>:  @{{comment.content}}</p>
+                        <div v-if="comment.user_id==={{Auth::user()->id}}">
+                            <button @click="deleteComment(comment)">Delete comment</button>
+                        </div>
                     </div>
                 </div>
             <div>
@@ -43,6 +47,7 @@ View post
                 newComment: '',
                 post: {{ $post->id }},
                 user: {{Auth::user()->id}},
+                editComment: '',
             },
             
             methods: {
@@ -53,12 +58,21 @@ View post
                         user: this.user,
                         post: this.post,
                     })
+                     
                     .then(response=>
                     {
-                        console.log(this.newComment);
-                        this.comments.push(response.data);
-                        this.newComment = "";
-                        this.getComments();
+                        if (response.data==0) {
+                            alert('Comment is blank');
+                        }else if(response.data==1){
+                            alert('Comment is limited to 50 characters');
+                        }else {
+                            alert('added');
+                            console.log(response);
+                            this.comments.push(response.data);
+                            this.newComment = "";
+                            this.getComments();
+                        }      
+                        
                     })
                     .catch(response=>
                     {
@@ -73,7 +87,16 @@ View post
                 .catch(response=>{
                     console.log(response);
                 })
-                }
+                },
+                deleteComment: function(comment){
+                    axios.delete("/api/comments/"+comment.id+"/delete")
+                .then(response=>{
+                    this.getComments();
+                })
+                .catch(response=>{
+                    console.log(response);
+                })
+                },
             },
             mounted(){
                 this.getComments();

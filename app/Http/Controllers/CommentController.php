@@ -46,6 +46,13 @@ class CommentController extends Controller
         return $comment;
         */
        $comment = new Comment;
+
+       if ($request['comment'] == null){
+            return 0;
+       }
+       if (strlen($request['comment'])>50){
+            return 1;
+       }
        $comment->content= $request['comment'];
        $comment->user_id = $request['user'];
        $comment->post_id = $request['post'];
@@ -88,7 +95,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -99,6 +106,10 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $comment = Comment::find($id);
+        
+        $comment->delete();
+        return $id;
     }
 }
