@@ -68,6 +68,7 @@ class UserController extends Controller
         $password = Hash::make($password);
 
         $user = User::create(['username'=>$username, 'email' => $email, 'password' => $password]);
+        $image = $user->image()->create(['filename'=>'default.png']);
         Auth::loginUsingId($user->id);
         $request->session()->put('user',$user);
         session(['profile' => $user]);
