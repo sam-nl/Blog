@@ -9,13 +9,11 @@ View post
 @endsection
 
 @section('content')
-
         <div id="app">
             <div class = "row">
                 <div class = "col-lg-6">
                     <div class = "col py-1">
-                        <h1>{{$user->username}} posted:</h1>
-                        
+                        <h1>{{$user->username}} posted:</h1>                       
                         <b>{{$post->content}}</b>
                     </div>
                 </div>
@@ -25,15 +23,14 @@ View post
                                 <img class = "w-100 image-fluid py-2" src={{ url('images/'.\App\Models\Image::where('imageable_id',$post->id)->
                                 where('imageable_type', 'App\Models\Post')->first('filename')['filename']) }}>
                             </div>
-                        @endif
-                
+                        @endif               
             </div>
             <div class="row">
                 <div class = "col-lg-1">
                     <b>Tags: </b>
                 </div>
                 @foreach ($tags as $tag)
-                    <div class = "col-lg-1">
+                    <div class = "col-lg-2">
                         <p>{{$tag->name}}</p>
                     </div>
                 @endforeach
@@ -77,7 +74,6 @@ View post
             </div>
         <div>
     </div>
-
 @endsection
 
 @section('script')

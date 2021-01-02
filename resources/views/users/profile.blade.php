@@ -90,7 +90,7 @@ Glob profile
                     @if  (Auth::user()->id == session('profile')['id'])
                         <div>
                             <form action="/posts/{{$post['id']}}/edit" method="GET">
-                                <button class="btn btn-lg btn-primary"  type = "submit" >Edit</button>
+                                <button class="btn btn-lg btn-primary"  type = "submit">Edit</button>
                             </form>
                         </div>
                     @endif

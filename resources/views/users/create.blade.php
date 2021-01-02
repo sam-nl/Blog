@@ -5,7 +5,6 @@ Glob register
 @endsection
 
 @section('links')
-<li class = links><a href="/home">Home</a></li>
 <li class = links><a href="/users/login">Login</a></li>
 @endsection
 

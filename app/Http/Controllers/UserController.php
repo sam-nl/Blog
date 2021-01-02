@@ -138,7 +138,7 @@ class UserController extends Controller
                     'username' => 'Username needs to be atleast 3 characters',
                 ]);
             }
-            if (User::where('username',$username)==null){
+            if (sizeof(User::where('username',$username)->get())!=0){
                 return back()->withErrors([
                     'username' => 'Username is taken',
                 ]);

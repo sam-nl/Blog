@@ -13,16 +13,6 @@ use \App\Models\Tag;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $posts = Post::all();
-        return view("posts/index", compact('posts'));
-    }
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -103,6 +93,7 @@ class PostController extends Controller
         foreach ($tagids as $tid){
             array_push($tags,Tag::find($tid->tag_id)); 
         }
+        array_pop($tags);
         return view('posts/view')->with(array('post'=>$post))->with(array('user'=>$user))->with(array('tags'=>$tags));
     }
     /**
@@ -121,9 +112,9 @@ class PostController extends Controller
                 'content' => 'The post is empty!',
             ]);
         }
-        if (strlen($content) >200){
+        if (strlen($content) >500){
             return back()->withErrors([
-                'content' => 'Post must be less than 200 characters',
+                'content' => 'Post must be less than 500 characters',
             ]);
         }   
         $post->content = $content;

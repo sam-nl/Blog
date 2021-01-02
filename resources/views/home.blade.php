@@ -7,6 +7,7 @@ Glob home
 @section('links')
 @if (Auth::user()!=null)
     <li class ="links"><a href="/users/show/{{Auth::user()->id}}">Go to profile</a></li>
+    <li class ="links"><a href="/users/logout">Logout</a></li>
 @else
     <li class ="links"><a href="/users/login">Login</a></li>
     <li class ="links"><a href="/users/create">Register</a></li>
