@@ -8,7 +8,6 @@ class CreatePostTagTable extends Migration
 {
     /**
      * Run the migrations.
-     * GET IT TEST:: $data = DB::table('post_tag')->get();
      * @return void
      */
     public function up()

@@ -93,7 +93,6 @@ class PostController extends Controller
         foreach ($tagids as $tid){
             array_push($tags,Tag::find($tid->tag_id)); 
         }
-        array_pop($tags);
         return view('posts/view')->with(array('post'=>$post))->with(array('user'=>$user))->with(array('tags'=>$tags));
     }
     /**
