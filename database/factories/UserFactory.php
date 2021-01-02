@@ -14,7 +14,6 @@ class UserFactory extends Factory
      * @var string
      */
     protected $model = User::class;
-
     /**
      * Define the model's default state.
      *
@@ -30,6 +29,5 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'permissions' => '0',
         ];
-        
     }
 }

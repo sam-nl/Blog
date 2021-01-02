@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use \App\Models\User;
 
 class UserTableSeeder extends Seeder
 {
@@ -15,9 +16,8 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-
-        \App\Models\User::factory()->count(5)->create();
-        \App\Models\User::create([
+        User::factory()->count(5)->create();
+        User::create([
             'username' => 'admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),

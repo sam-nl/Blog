@@ -5,12 +5,11 @@ Glob register
 @endsection
 
 @section('links')
-<li><a href="/home">Home</a></li>
-<li><a href="/users/login">Login</a></li>
+<li class = links><a href="/home">Home</a></li>
+<li class = links><a href="/users/login">Login</a></li>
 @endsection
 
 @section('content')
-
 <form action="/users" method="POST">
     <div class = "centre-form">
         <h1>Register</h1>
@@ -35,9 +34,7 @@ Glob register
     @csrf
     <div class = "centre-form">
         <hr>
-        <button type="submit" >Register</button>
+        <button class="btn btn-lg btn-primary" type="submit" >Register</button>
     </div>
-    
 </form>
-
 @endsection

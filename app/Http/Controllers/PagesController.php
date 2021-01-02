@@ -7,14 +7,10 @@ class PagesController extends Controller
 {
     public function getHome()
     {
-        return view('home');
-        
+        return view('home');  
     }
-
     public function getProfile()
-    {
-        
-        return view('users/profile');
-        
+    { 
+        return view('users/profile'); 
     }
 }

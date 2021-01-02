@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Tag;
 use Illuminate\Support\Facades\DB;
+use \App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -14,22 +16,21 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($tag)
-    {
-            $tag = Tag::where('name',$tag)->first();
-            if ($tag!=null){
-                $postids = DB::table('post_tag')
-                ->where('tag_id', $tag->id)
-                ->get('post_id');
-                $posts= [];
-                foreach ($postids as $pid){
-                    array_push($posts,\App\Models\Post::find($pid->post_id)); 
-                }
-                
-                return view("tags/index", compact('posts','tag'));
+    {       
+        $tag = Tag::where('name',$tag)->first();
+        if ($tag!=null){
+            $postids = DB::table('post_tag')->where('tag_id', $tag->id)->get('post_id');
+            $posts= [];
+            foreach ($postids as $pid){
+                array_push($posts,Post::find($pid->post_id)); 
             }
-            else{
-                dd('tag null');
-            }
+            return view("tags/index", compact('posts','tag'));
+        }
+        else{
+            return back()->withErrors([
+                'tag' => 'Tag not found!',
+            ]); 
+        }
     }
     function find(Request $request){
 
@@ -44,7 +45,6 @@ class TagController extends Controller
             ]);
         }
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -52,9 +52,13 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('tags/create');
+        if (Auth::user()->permissions == 1){
+            return view('tags/create');
+        }
+        else{
+            return back();
+        } 
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -76,50 +80,5 @@ class TagController extends Controller
         }
         $tag = Tag::create(['name'=>$tag]);
         return redirect('users/admin');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

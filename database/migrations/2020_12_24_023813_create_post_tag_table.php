@@ -26,7 +26,6 @@ class CreatePostTagTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *

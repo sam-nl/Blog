@@ -18,7 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::get('posts/{post}/comments','App\Http\Controllers\CommentController@apiindex');
 Route::post('posts/{post}/comments','App\Http\Controllers\CommentController@apistore');
 Route::delete('/comments/{comment}/delete','App\Http\Controllers\CommentController@destroy');

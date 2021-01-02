@@ -19,16 +19,7 @@ class CommentController extends Controller
     {
         $comments = Comment::where('post_id',$post)->with('user')->latest()->get();
         return $comments;
-        //return response()->json($post->comments()->with('user')->latest()->get());
-        
-        /*
-        $comments = Comment::get();
-        
-        return $comments;
-        */
     }
-    
-
     /**
      * Store a newly created resource in storage.
      *
@@ -37,67 +28,19 @@ class CommentController extends Controller
      */
     public function apistore(Request $request)
     {
-        /*
-        $comment = $request->post->comments->create([
-            'content' =>$request->content,
-            'user_id'=> Auth::user(),
-        ]);
-        $comment = Comment::where('id',$comment->id)->with('user')->first();
-        return $comment;
-        */
-       $comment = new Comment;
-
-       if ($request['comment'] == null){
+        $comment = new Comment;
+        if ($request['comment'] == null){
             return 0;
-       }
-       if (strlen($request['comment'])>50){
+        }
+        if (strlen($request['comment'])>100){
             return 1;
-       }
-       $comment->content= $request['comment'];
-       $comment->user_id = $request['user'];
-       $comment->post_id = $request['post'];
+        }
+        $comment->content= $request['comment'];
+        $comment->user_id = $request['user'];
+        $comment->post_id = $request['post'];
         $comment->save();
         return $comment->with('user')->get();
-        
-
-
     }
-    
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -105,10 +48,8 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        
+    {    
         $comment = Comment::find($id);
-        
         $comment->delete();
         return $id;
     }

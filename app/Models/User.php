@@ -11,7 +11,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-
     public function posts()
     {
         return $this->hasMany('App\Models\Post');
@@ -31,11 +30,9 @@ class User extends Authenticatable
         'password',
         'image',
     ];
-
     public function image(){
         return $this->morphOne(Image::class, "imageable");
     }
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -45,7 +42,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
     /**
      * The attributes that should be cast to native types.
      *

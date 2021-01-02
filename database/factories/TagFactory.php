@@ -13,7 +13,6 @@ class TagFactory extends Factory
      * @var string
      */
     protected $model = Tag::class;
-
     /**
      * Define the model's default state.
      *
@@ -23,7 +22,6 @@ class TagFactory extends Factory
     {
         return [
             'name' => $this->faker->word
-            
         ];
     }
 }

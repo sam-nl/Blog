@@ -1,11 +1,11 @@
 @extends('main')
 
 @section('title')
-Create new post
+Edit post
 @endsection
 
 @section('links')
-<li class ="links"><a href="/users/show/{{session('user')['id']}}">Back to profile</a></li>
+<li class ="links"><a href="/users/show/{{$user->username}}">Back to profile</a></li>
 @endsection
 
 @section('content')
@@ -15,16 +15,14 @@ Create new post
         <b>Edit Post</b>
     </div>
     <div class = "centre-form">
-        <textarea rows="10" cols="50" type="text" placeholder="Enter Post" name="content" id="content" required>{{$post}}</textarea>
+        <textarea rows="10" cols="50" type="text" placeholder="Enter Post" name="content" id="content" required>{{$post->content}}</textarea>
         @error('content')<div class = "err"><p>{{$message}}<p></div>@enderror
     </div>
     @csrf
     <div class = "centre-form">
-        
-        <button type="submit" >edit</button>
+        <button class="btn btn-lg btn-primary" type="submit" >edit</button>
         <hr>
     </div>
-    
     </form>
     <form action="delete" method="POST">
         @method("DELETE")
@@ -41,8 +39,7 @@ Create new post
         @csrf
         <div class = "centre-form">
             <hr>
-            <button type="submit" >DELETE</button>
+            <button class="btn btn-lg  btn-danger" type="submit" >DELETE</button>
         </div>
     </form>
-
 @endsection

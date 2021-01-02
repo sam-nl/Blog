@@ -14,7 +14,6 @@ class PostFactory extends Factory
      * @var string
      */
     protected $model = Post::class;
-
     /**
      * Define the model's default state.
      *
@@ -23,9 +22,8 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'content' => $this->faker->sentence,
-            'user_id'=>\App\Models\User::inRandomOrder()->first()->id,
-            
+            'content' => $this->faker->paragraph,
+            'user_id'=>\App\Models\User::inRandomOrder()->first()->id, 
         ];
     }
 }
